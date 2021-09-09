@@ -1,34 +1,61 @@
 <template>
-    <h1>Footer</h1>
+  <div>
+    <v-footer dark padless class="mt-5">
+      <v-card class="flex" flat tile>
+        <v-card-title class="supFooter">
+          <strong class="subheading">
+            Únete a millones de estudiante alrededor del mundo que ya están
+            aprendiendo en AlfaWeb.
+          </strong>
+
+          <v-spacer></v-spacer>
+
+          <v-btn v-for="icon in icons" :key="icon" class="mx-4" dark icon>
+            <v-icon size="24px">
+              {{ icon }}
+            </v-icon>
+          </v-btn>
+        </v-card-title>
+
+        <v-card-text class="py-2 white--text text-center">
+          {{ new Date().getFullYear() }} — <strong>AlfaWeb</strong>
+        </v-card-text>
+      </v-card>
+    </v-footer>
+  </div>
 </template>
 
 <script>
 //import {name} from '{route}'
 
 export default {
-    name: 'footer',
-    // props: {},
-    data: function(){
-        return {}
-    },
-    // computed: {},
-    // methods: {},
-    // watch: {},
-    // components: {},
+  name: "footer-component",
+  // props: {},
+  data: function () {
+    return {
+      icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"],
+    };
+  },
+  // computed: {},
+  // methods: {},
+  // watch: {},
+  // components: {},
 
-    // -- Lifecycle Methods
-    // beforeCreate() {},
-    // created() {},
-    // beforeMount() {},
-    // mounted() {},
-    // beforeUpdate() {},
-    // updated() {},
-    // beforeDestroy() {},
-    // destroyed() {},
-    // -- End Lifecycle Methods
-}
+  // -- Lifecycle Methods
+  // beforeCreate() {},
+  // created() {},
+  // beforeMount() {},
+  // mounted() {},
+  // beforeUpdate() {},
+  // updated() {},
+  // beforeDestroy() {},
+  // destroyed() {},
+  // -- End Lifecycle Methods
+};
 </script>
 
 <style scoped>
-    
+ .supFooter {
+     background-color: #9400ff;
+ }
 </style>

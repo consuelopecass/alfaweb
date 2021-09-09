@@ -1,32 +1,76 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-app-bar app color="deep-purple accent-4" dark>
+      <div class="d-flex align-center">
+        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+        <h2>Cursos AlfaWeb</h2>
+      </div>
+      <v-spacer></v-spacer>
+      <div>
+        <v-btn
+          depressed
+          color="deep-purple accent-4"
+          @click="$router.push('/')"
+        >
+          <v-icon>mdi-home</v-icon>
+        </v-btn>
+        <v-btn
+          depressed
+          color="deep-purple accent-4"
+          @click="$router.push('/admin')"
+        >
+          <v-icon>mdi-account</v-icon>
+        </v-btn>
+      </div>
+      <span class="mr-2">{{ email }}</span>
+      <Logout />
+    </v-app-bar>
+
+    <v-main>
+      <router-view />
+    </v-main>
+
+    <Footer />
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import Logout from "./components/Logout.vue";
+import Footer from "./components/Footer.vue";
+import { mapState, mapActions } from "vuex";
 
-#nav {
-  padding: 30px;
-}
+export default {
+  name: "App",
+  // props: {},
+  data: function () {
+    return {};
+  },
+  computed: {
+    ...mapState(["email"]),
+  },
+  methods: {
+    ...mapActions(["fetchCursos"]),
+  },
+  // watch: {},
+  components: {
+    Logout,
+    Footer,
+  },
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  // -- Lifecycle Methods
+  // beforeCreate() {},
+  created() {
+    this.fetchCursos();
+  },
+  // beforeMount() {},
+  // mounted() {},
+  // beforeUpdate() {},
+  // updated() {},
+  // beforeDestroy() {},
+  // destroyed() {},
+  // -- End Lifecycle Methods
+};
+</script>
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+<style scoped>
 </style>

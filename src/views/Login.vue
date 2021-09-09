@@ -1,73 +1,132 @@
 <template>
-    <div>
-        <h1>Ingresar</h1>
-        <h2>User: user@user.cl</h2>
-        <h2>Pass: 123456</h2>
-        <form>
-            <label for="">Usuario</label>
-            <input type="text" v-model="user">
-            <br>
-            <label for="">Contraseña</label>
-            <input type="password" v-model="pass">
-            <button @click.prevent="login">Acceder</button>
-        </form>
-    </div>
+  <div>
+    <v-container>
+      <v-row>
+        <v-col>
+          <div class="datosIngreso">
+            <h2>User: user@user.cl</h2>
+            <h2>Pass: 123456</h2>
+          </div>
+          <h2 class="tituloLogin mt-3 mb-5">Login de Usuario</h2>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-text-field
+              v-model="user"
+              :counter="10"
+              :rules="emailRules"
+              label="E-mail"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              v-model="pass"
+              :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+              :rules="[rules.required, rules.min]"
+              :type="show2 ? 'text' : 'password'"
+              name="input-10-2"
+              label="Contraseña"
+              hint="Min 6 caracteres"
+              value="wqfasds"
+              class="input-group--focused"
+              @click:append="show2 = !show2"
+            ></v-text-field>
+
+            <div class="btnForm">
+              <v-btn
+                :disabled="!valid"
+                color="success"
+                class="mr-4"
+                @click="login"
+              >
+                INICIAR SESION
+              </v-btn>
+
+              <v-btn color="error" class="mr-4" @click="limpiarForm">
+                LIMPIAR FORMULARIO
+              </v-btn>
+
+              <v-btn color="warning" @click="$router.push('/registro')">
+                IR A REGISTRO
+              </v-btn>
+            </div>
+          </v-form>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script>
-import firebase from 'firebase'
+import firebase from "firebase";
+import { mapActions } from "vuex";
 
 export default {
-    name: 'Login',
-    // props: {},
-    data: function(){
-        return {
-            user: '',
-            pass: '',
-        }
+  name: "Login",
+  // props: {},
+  data: function () {
+    return {
+      user: "",
+      pass: "",
+      show2: false,
+      rules: {
+        required: (value) => !!value || "Contraseña requerida",
+        min: (v) => v.length >= 6 || "Min 6 caracteres",
+      },
+      valid: true,
+      emailRules: [
+        (v) => !!v || "E-mail requerido",
+        (v) => /.+@.+\..+/.test(v) || "El E-mail debe ser válido",
+      ],
+    };
+  },
+  // computed: {},
+  methods: {
+    login() {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.user, this.pass)
+        .then((resp) => {
+          console.log(resp, "login");
+          this.$router.push("/");
+          this.setMail(this.user);
+        })
+        .catch((error) => {
+          let errorCode = error.code;
+          let errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+        });
     },
-    // computed: {},
-    methods: {
-        login(){
-            firebase.auth().signInWithEmailAndPassword(this.user, this.pass)
-            .then((resp)=>{
-                console.log(resp, 'login');
-                this.$router.push('/')
-            })
-            .catch(error=>{
-                let errorCode = error.code;
-                let errorMessage = error.message;
-                console.log(errorCode, errorMessage);
-            })
-        }
+    ...mapActions(["setMail"]),
+    limpiarForm() {
+      this.user = "";
+      this.pass = "";
     },
-    // watch: {},
-    // components: {},
+  },
+  // watch: {},
+  // components: {},
 
-    // -- Lifecycle Methods
-    // beforeCreate() {},
-    // created() {},
-    // beforeMount() {},
-    // mounted() {},
-    // beforeUpdate() {},
-    // updated() {},
-    // beforeDestroy() {},
-    // destroyed() {},
-    // -- End Lifecycle Methods
-}
+  // -- Lifecycle Methods
+  // beforeCreate() {},
+  // created() {},
+  // beforeMount() {},
+  // mounted() {},
+  // beforeUpdate() {},
+  // updated() {},
+  // beforeDestroy() {},
+  // destroyed() {},
+  // -- End Lifecycle Methods
+};
 </script>
 
 <style scoped>
-    form {
-        display: grid;
-        width: 300px;
-        margin: 0 auto;
-    }
-    button {
-        margin-top: 20px;
-    }
-    label {
-        margin-top: 10px;
-        margin-bottom: 5px;
-    }
+.tituloLogin {
+  font-size: 40px;
+}
+
+.datosIngreso {
+  text-align: center;
+}
+
+.btnForm {
+  text-align: center;
+}
 </style>

@@ -32,6 +32,15 @@ const routes = [
     component: () => import(/* webpackChunkName: "admin" */ '../views/Admin.vue')
   },
   {
+    path: '/edicion/:id',
+    props: true,
+    name: 'Edicion',
+    meta: {
+      privado: true
+    },
+    component: () => import(/* webpackChunkName: "edicion" */ '../views/Edicion.vue')
+  },
+  {
     path: '/*',
     name: 'NotFound',
     component: () => import(/* webpackChunkName: "about" */ '../views/NotFound.vue')
